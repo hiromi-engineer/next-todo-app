@@ -1,15 +1,16 @@
 import { auth } from '../../lib/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 
 const SignUp = () => {
   const [complete, setComplete] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const email = useRef<HTMLInputElement>(null!);
+  const password = useRef<HTMLInputElement>(null!);
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    const { email, password } = event.target.elements;
-    createUserWithEmailAndPassword(auth, email.value, password.value)
+    createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
       .then(() => {
         setComplete(true);
       })
@@ -45,16 +46,11 @@ const SignUp = () => {
           {error && <p style={{ color: 'red' }}>{error}</p>}
           <div>
             <label htmlFor="email">メールアドレス</label>
-            <input id="email" name="email" type="email" placeholder="email" />
+            <input ref={email} type="email" placeholder="email" />
           </div>
           <div>
             <label htmlFor="password">パスワード</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="password"
-            />
+            <input ref={password} type="password" placeholder="password" />
           </div>
           <div>
             <button>登録</button>

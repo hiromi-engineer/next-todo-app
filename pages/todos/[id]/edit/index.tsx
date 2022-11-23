@@ -16,7 +16,7 @@ const TodoEdit = () => {
   const id = router.query.id ?? '';
   useEffect(() => {
     if(isReady) {
-      const decRef = id && doc(db, 'todos', id);
+      const decRef = id && doc(db, 'todos', id as string);
       decRef ? getDoc(decRef).then( data => {
           const todoData = data.data();
           todoData && setTodo({title: todoData.title, desc: todoData.desc, status: todoData.status, deadline: todoData.deadline}); 
@@ -26,12 +26,12 @@ const TodoEdit = () => {
     }
   }, [isReady]);
   const editTodo = ( todo: EditTodo ): void => {
-    const todoUpdate = doc(db, "todos", id);
+    const todoUpdate = doc(db, "todos", id as string);
     updateDoc(todoUpdate, {...todo});
     router.push(`/todos/${id}`);
   }
   const deleteTodo = (): void => {
-    deleteDoc(doc(db, "todos", id));
+    deleteDoc(doc(db, "todos", id as string));
     router.push(`/todos/`);
   }
   return (

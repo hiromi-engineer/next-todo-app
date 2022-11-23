@@ -1,4 +1,3 @@
-import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { todoAtom, EditTodo } from '../lib/Atom';
 import { useForm, SubmitHandler } from "react-hook-form";

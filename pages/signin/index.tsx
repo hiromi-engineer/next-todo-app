@@ -1,16 +1,18 @@
 import { auth} from '../../lib/auth';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from 'next/router';
 
 const Signin = () => {
   const [error, setError] = useState<string>('');
   const router = useRouter();
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const email = useRef<HTMLInputElement>(null!);
+  const password = useRef<HTMLInputElement>(null!);
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const { email, password } = event.target.elements;
+    
 
-    signInWithEmailAndPassword(auth, email.value, password.value)
+    signInWithEmailAndPassword(auth, email.current.value, password.current.value)
       .then(() => {
         router.push('/todos/');
       })
@@ -38,16 +40,11 @@ const Signin = () => {
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <div>
           <label htmlFor="email">メールアドレス</label>
-          <input id="email" name="email" type="email" placeholder="email" />
+          <input ref={email} type="email" placeholder="email" />
         </div>
         <div>
           <label htmlFor="password">パスワード</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="password"
-          />
+          <input ref={password} type="password" placeholder="password" />
         </div>
         <div>
           <button>ログイン</button>

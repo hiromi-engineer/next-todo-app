@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {db} from '../../../lib/firebase';
-import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import Link from 'next/link';
 import { useRouter } from 'next/router'
 
@@ -22,7 +22,7 @@ const TodoDetail = () => {
   const isReady = router.isReady;
   useEffect(() => {
     if(isReady) {
-      const decRef = id && doc(db, 'todos', id);
+      const decRef = id && doc(db, 'todos', id as string);
       decRef ? getDoc(decRef).then( data => {
         const todoData = data.data();
         todoData && setTodoDetail({title: todoData.title, desc: todoData.desc, status: todoData.status, create: todoData.create, deadline: todoData.deadline}); 
