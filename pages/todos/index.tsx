@@ -48,7 +48,7 @@ const Todos = () => {
   return (
     <>
       <h1 style={{marginBottom: '0'}}>TODO一覧</h1>
-      <Link href={'/create/'} style={{display: 'inline-block',margin: '20px 0'}}>新規作成</Link><br />
+      <Link href={'/todos/create/'} style={{display: 'inline-block',margin: '20px 0'}}>新規作成</Link><br />
       <span>表示するステータス：</span>
       <select name="status" value={filter.status} onChange={changeFilterStatus}>
         {statuses.map((status, index) => <option key={index} value={status}>{status}</option>)}

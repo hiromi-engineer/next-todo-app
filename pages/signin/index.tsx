@@ -1,17 +1,18 @@
-import { Auth } from "firebase/auth";
-import {auth} from '../../lib/firebase';
+import { auth} from '../../lib/auth';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from "react";
+import { useRouter } from 'next/router';
 
 const Signin = () => {
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string>('');
+  const router = useRouter();
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const { email, password } = event.target.elements;
 
     signInWithEmailAndPassword(auth, email.value, password.value)
       .then(() => {
-        console.log('ログイン');
+        router.push('/todos/');
       })
       .catch((error) => {
         switch (error.code) {

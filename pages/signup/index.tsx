@@ -1,16 +1,17 @@
-import React from 'react';
-import { auth } from '../../lib/firebase';
+import { auth } from '../../lib/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
+import Link from 'next/link';
 
 const SignUp = () => {
-  const [error, setError] = useState('');
+  const [complete, setComplete] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const { email, password } = event.target.elements;
     createUserWithEmailAndPassword(auth, email.value, password.value)
       .then(() => {
-        console.log('登録')
+        setComplete(true);
       })
       .catch((error) => {
         console.log(error.code);
@@ -34,25 +35,32 @@ const SignUp = () => {
   return (
     <div>
       <h1>ユーザ登録</h1>
-      <form onSubmit={handleSubmit}>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <div>
-          <label htmlFor="email">メールアドレス</label>
-          <input id="email" name="email" type="email" placeholder="email" />
-        </div>
-        <div>
-          <label htmlFor="password">パスワード</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="password"
-          />
-        </div>
-        <div>
-          <button>登録</button>
-        </div>
-      </form>
+      { complete ? (
+        <>
+          <p>登録完了しました</p>
+          <Link href="/signin/"></Link>
+        </>
+      ): (
+        <form onSubmit={handleSubmit}>
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+          <div>
+            <label htmlFor="email">メールアドレス</label>
+            <input id="email" name="email" type="email" placeholder="email" />
+          </div>
+          <div>
+            <label htmlFor="password">パスワード</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="password"
+            />
+          </div>
+          <div>
+            <button>登録</button>
+          </div>
+        </form>
+      ) }
     </div>
   );
 };
